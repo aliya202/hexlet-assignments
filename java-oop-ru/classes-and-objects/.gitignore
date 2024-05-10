@@ -1,0 +1,8 @@
+.gradle/
+build/
+caches/
+.idea/
+
+.DS_Store
+java-oop-ru/.DS_Store
+java-oop-ru/classes-and-objects/config/.DS_Store
