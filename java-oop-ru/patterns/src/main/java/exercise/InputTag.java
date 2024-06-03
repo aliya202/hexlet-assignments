@@ -1,18 +1,18 @@
 package exercise;
 
 // BEGIN
-public class InputTag implements TagInterface {
-    private String type;
-    private String value;
+public class LabelTag implements TagInterface {
+    private String text;
+    private TagInterface childTag;
 
-    public InputTag(String type, String value) {
-        this.type = type;
-        this.value = value;
+    public LabelTag(String text, TagInterface childTag) {
+        this.text = text;
+        this.childTag = childTag;
     }
 
     @Override
     public String render() {
-        return String.format("<input type=\"%s\" value=\"%s\">", type, value);
+        return String.format("<label>%s%s</label>", text, childTag.render());
     }
 }
 // END
