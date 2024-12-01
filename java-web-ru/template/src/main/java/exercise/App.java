@@ -21,11 +21,11 @@ public final class App {
 
         // BEGIN
         app.get("/users/{id}", ctx -> {
-            String idParam = ctx.pathParam("id");
+            var id = ctx.pathParam("id");
 
             // Ищем пользователя по ID
             User user = USERS.stream()
-                    .filter(u -> String.valueOf(u.getId()).equals(idParam))
+                    .filter(u -> String.valueOf(u.getId()).equals(id))
                     .findFirst()
                     .orElseThrow(() -> new NotFoundResponse("User not found"));
 
