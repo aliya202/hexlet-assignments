@@ -27,16 +27,15 @@ public final class App {
 
         // BEGIN
         app.get("/users", ctx -> {
-            String term = ctx.queryParam("term").toLowerCase();
+            // Получаем параметр term или пустую строку, если параметр отсутствует
+            String term = ctx.queryParam("term", "").toLowerCase();
 
+            // Фильтруем пользователей по началу имени без учета регистра
             List<User> filteredUsers = USERS.stream()
                     .filter(user -> StringUtils.startsWithIgnoreCase(user.getFirstName(), term))
                     .toList();
 
-            if (filteredUsers.isEmpty()) {
-                throw new NotFoundResponse("No users found.");
-            }
-
+            // Если список пользователей пуст, не выбрасываем ошибку, а просто рендерим пустую форму
             UsersPage usersPage = new UsersPage(filteredUsers);
             ctx.render("users/index.jte", model("usersPage", usersPage, "term", term));
         });
