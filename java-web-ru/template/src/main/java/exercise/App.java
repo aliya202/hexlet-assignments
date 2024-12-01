@@ -22,10 +22,18 @@ public final class App {
         });
 
         // BEGIN
-        app.get("/users", ctx -> {
-            var page = new UsersPage(USERS);
-            ctx.render("users/index.jte", model("page", page));
+        app.get("/users/{id}", ctx -> {
+            String idParam = ctx.pathParam("id");
+
+            // Ищем пользователя по ID
+            User user = USERS.stream()
+                    .filter(u -> String.valueOf(u.getId()).equals(idParam))
+                    .findFirst()
+                    .orElseThrow(() -> new NotFoundResponse("User not found"));
+
+            ctx.render("users/show.jte", model("user", user));
         });
+
 
         // END
 
