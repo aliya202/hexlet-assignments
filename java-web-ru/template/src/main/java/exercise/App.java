@@ -33,8 +33,6 @@ public final class App {
 
             ctx.render("users/show.jte", model("user", user));
         });
-
-
         // END
 
         app.get("/", ctx -> {
