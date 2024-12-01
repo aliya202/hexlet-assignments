@@ -27,17 +27,17 @@ public final class App {
 
         // BEGIN
         app.get("/users", ctx -> {
-            String term = Objects.requireNonNull(ctx.queryParam("term")).toLowerCase();
+            String term = ctx.queryParam("term").toLowerCase();
 
             List<User> filteredUsers = USERS.stream()
                     .filter(user -> StringUtils.startsWithIgnoreCase(user.getFirstName(), term))
                     .toList();
 
-            UsersPage usersPage = new UsersPage(filteredUsers);
-
-            if (filteredUsers.isEmpty() && term.isEmpty()) {
+            if (filteredUsers.isEmpty()) {
                 throw new NotFoundResponse("No users found.");
+            }
 
+            UsersPage usersPage = new UsersPage(filteredUsers);
             ctx.render("users/index.jte", model("usersPage", usersPage, "term", term));
         });
         // END
