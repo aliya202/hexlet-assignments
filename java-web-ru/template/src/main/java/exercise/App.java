@@ -20,16 +20,17 @@ public final class App {
         });
 
         // BEGIN
-        app.get("/users/{id}", ctx -> {
-            var id = ctx.pathParam("id");
+        app.get("/users", ctx -> {
+            ctx.json(USERS);
+        });
 
-            // Ищем пользователя по ID
+        app.get("/users/{id}", ctx -> {
+            long id = Long.parseLong(ctx.pathParam("id"));
             User user = USERS.stream()
-                    .filter(u -> String.valueOf(u.getId()).equals(id))
+                    .filter(u -> u.getId() == id)
                     .findFirst()
                     .orElseThrow(() -> new NotFoundResponse("User not found"));
-
-            ctx.render("users/show.jte", model("user", user));
+            ctx.json(user);
         });
         // END
 
