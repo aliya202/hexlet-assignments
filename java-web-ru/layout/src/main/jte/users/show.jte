@@ -1,24 +1,13 @@
-@template layout.page
-@params String title, List<exercise.model.User> users
+@import exercise.dto.users.UserPage
+@param UserPage page
 
-<h1 class="mb-4">List of Users</h1>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (User user : users) {
-            <tr>
-                <td>@user.getId()</td>
-                <td>@user.getFirstName()</td>
-                <td>@user.getLastName()</td>
-                <td>@user.getEmail()</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@template.layout.page(
+
+    content = @`
+        <h2>${page.getUser().getFirstName()} ${page.getUser().getLastName()}</h2>
+        <div>${page.getUser().getEmail()}</div>
+    `,
+    footer = @`
+        <p>Thanks for visiting, come again soon!</p>
+    `
+)

@@ -20,6 +20,10 @@ public final class App {
             config.fileRenderer(new JavalinJte());
         });
 
+        app.get("/", ctx -> {
+            ctx.render("index.jte");
+        });
+
         app.get("/users/{id}", ctx -> {
             var id = ctx.pathParamAsClass("id", Long.class).get();
             User user = USERS.stream()
@@ -38,7 +42,6 @@ public final class App {
         app.get("/users", ctx -> {
             var page = new UsersPage(USERS);
             ctx.render("users/index.jte", model("page", page));
-
         });
 
         return app;

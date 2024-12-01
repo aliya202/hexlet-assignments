@@ -1,5 +1,23 @@
-@template layout.page
-@params String title
+@import exercise.dto.users.UsersPage
+@param UsersPage page
 
-<h1 class="text-center">Welcome to the User Management App</h1>
-<p class="text-center">Explore the app by visiting the <a href="/users">users</a> page.</p>
+@template.layout.page(
+    content = @`
+        <h1>Пользователи</h1>
+        <table class="table table-striped">
+            @for(var user : page.getUsers())
+                <tr>
+                    <td>
+                        ${user.getId()}
+                    </td>
+                    <td>
+                        <a href="/users/${user.getId()}">${user.getFirstName()} ${user.getLastName()}</a>
+                    </td>
+                </tr>
+            @endfor
+        </table>
+    `,
+    footer = @`
+        <p>Thanks for visiting, come again soon!</p>
+    `
+)
