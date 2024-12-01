@@ -26,18 +26,24 @@ public final class App {
         });
 
         // BEGIN
+
         app.get("/users", ctx -> {
-            // Получаем параметр term или пустую строку, если параметр отсутствует
-            String term = ctx.queryParam("term", "").toLowerCase();
+            var term = ctx.queryParam("term");
+            List<User> users;
+            if (term == null) {
+                users = USERS;
+            } else {
+                users = USERS
+                        .stream()
+                        .filter(u -> {
+                            return StringUtils.startsWithIgnoreCase(u.getFirstName(), term);
+                        })
+                        .toList();
+            }
 
-            // Фильтруем пользователей по началу имени без учета регистра
-            List<User> filteredUsers = USERS.stream()
-                    .filter(user -> StringUtils.startsWithIgnoreCase(user.getFirstName(), term))
-                    .toList();
+            var page = new UsersPage(users, term);
+            ctx.render("users/index.jte", model("page", page));
 
-            // Если список пользователей пуст, не выбрасываем ошибку, а просто рендерим пустую форму
-            UsersPage usersPage = new UsersPage(filteredUsers);
-            ctx.render("users/index.jte", model("usersPage", usersPage, "term", term));
         });
         // END
 

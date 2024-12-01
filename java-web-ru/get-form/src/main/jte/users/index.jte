@@ -1,24 +1,27 @@
 @import exercise.dto.users.UsersPage
-@param UsersPage usersPage
-@param String term
+@param UsersPage page
 
-<div class="container">
-    <form method="get" action="/users" class="mb-3">
-        <div class="input-group">
-            <input type="text" name="term" value="${term}" class="form-control" placeholder="Поиск по имени">
-            <button class="btn btn-primary" type="submit">Искать</button>
-        </div>
-    </form>
-
-    <ul class="list-group">
-        @if (usersPage.getUsers().isEmpty())
-            <li class="list-group-item">Совпадений не найдено</li>
-        @else
-            @for (var user : usersPage.getUsers())
-                <li class="list-group-item">
-                    <strong>${user.getFirstName()}</strong> ${user.getLastName()} - ${user.getEmail()}
-                </li>
-            @end
-        @end
-    </ul>
-</div>
+@template.layout.page(
+    content = @`
+        <h1>Пользователи</h1>
+        <form class="input-group" action="/users">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="term" value="${page.getTerm()}" />
+            <input type="submit" class="btn btn-outline-primary" value="Search">
+        </form>
+        <table class="table table-striped">
+            @for(var user : page.getUsers())
+                <tr>
+                    <td>
+                        ${user.getId()}
+                    </td>
+                    <td>
+                        ${user.getFirstName()}
+                    </td>
+                    <td>
+                        ${user.getLastName()}
+                    </td>
+                </tr>
+            @endfor
+        </table>
+    `
+)
