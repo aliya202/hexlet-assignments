@@ -31,20 +31,20 @@ public final class App {
         });
 
         // BEGIN
-        app.get("/articles/build", ctx -> {
-            var page = new BuildArticlePage(null, "", "");
+        app.get("articles/build", ctx -> {
+            var page = new BuildArticlePage();
             ctx.render("articles/build.jte", model("page", page));
         });
 
         app.post("/articles", ctx -> {
             try {
                 var title = ctx.formParamAsClass("title", String.class)
-                        .check(v -> v.length() >= 2, "Название не должно быть короче двух символов")
-                        .check(v -> !ArticleRepository.existsByTitle(v), "Статья с таким названием уже существует")
+                        .check(value -> value.length() >= 2, "Название не должно быть короче двух символов")
+                        .check(value -> !ArticleRepository.existsByTitle(value), "Статья с таким названием уже существует")
                         .get();
 
                 var content = ctx.formParamAsClass("content", String.class)
-                        .check(v -> v.length() >= 10, "Статья должна быть не короче 10 символов")
+                        .check(value -> value.length() >= 10, "Статья должна быть не короче 10 символов")
                         .get();
 
                 var article = new Article(title, content);
@@ -52,17 +52,10 @@ public final class App {
                 ctx.redirect("/articles");
 
             } catch (ValidationException e) {
-                // Обработка ошибок валидации
-                var errors = e.getErrors().entrySet().stream()
-                        .collect(java.util.stream.Collectors.toMap(
-                                java.util.Map.Entry::getKey,
-                                entry -> entry.getValue().get(0) // Берем первую ошибку
-                        ));
-
                 var title = ctx.formParam("title");
                 var content = ctx.formParam("content");
-                var page = new BuildArticlePage(errors, title, content);
-                ctx.status(422).render("articles/build.jte", model("page", page));
+                var page = new BuildArticlePage(title, content, e.getErrors());
+                ctx.render("articles/build.jte", model("page", page)).status(422);
             }
         });
         // END

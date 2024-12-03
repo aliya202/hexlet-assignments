@@ -1,16 +1,20 @@
 package exercise.dto.articles;
 
-import java.util.Map;
 import io.javalin.validation.ValidationError;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.util.Map;
+import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+
+// BEGIN
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class BuildArticlePage {
-    private Map<String, ? extends ValidationError<?>> errors;
     private String title;
     private String content;
+    private Map<String, List<ValidationError<Object>>> errors;
 }
+// END
