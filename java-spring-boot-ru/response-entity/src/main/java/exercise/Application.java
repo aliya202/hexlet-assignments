@@ -38,6 +38,7 @@ public class Application {
                 .limit(limit)
                 .toList();
         return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(posts.size()))
                 .body(list);
     }
 
