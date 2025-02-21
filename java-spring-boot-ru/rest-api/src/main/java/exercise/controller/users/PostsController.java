@@ -31,9 +31,10 @@ public class PostsController {
 
     @PostMapping("/users/{id}/posts")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@PathVariable String id, @RequestBody Post post) {
+    public Post create(@PathVariable String id, @RequestBody Post post) {
         post.setUserId(Integer.parseInt(id));
         posts.add(post);
+        return post;
     }
 
 
