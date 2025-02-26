@@ -67,9 +67,6 @@ public class ProductsController {
         var post = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not Found: " + id));
         productMapper.update(postData, post);
-        post.setTitle(post.getTitle());
-        post.setPrice(post.getPrice());
-        post.setCategory(post.getCategory());
         productRepository.save(post);
         var postDTO = productMapper.map(post);
         return postDTO;
